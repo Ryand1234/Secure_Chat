@@ -27,12 +27,12 @@ var server = app.listen(process.env.PORT||3000, ()=>{
 	console.log("Server Listening at http://localhost:3000");
 	});
 
-const io = require('socket.io')(server);
-
-io.configure((function(){
+const io = require('socket.io').listen(server);
+/*
+io.configure(function(){
 	io.set('transports', ['xhr-polling']);
 	io.set('polling duration',10);
-});
+});*/
 io.on('connection', (socket)=>{
 	users[user] = socket.id;
 	reverse_users[socket.id] = user;
