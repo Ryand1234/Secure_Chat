@@ -29,6 +29,10 @@ var server = app.listen(process.env.PORT||3000, ()=>{
 
 const io = require('socket.io')(server);
 
+io.configure((function(){
+	io.set('transports', ['xhr-polling']);
+	io.set('polling duration',10);
+});
 io.on('connection', (socket)=>{
 	users[user] = socket.id;
 	reverse_users[socket.id] = user;
