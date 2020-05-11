@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+    <head>
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		var user;
+		$(function(){
+		 var socket = io.connect();
+		/* socket.on('connect', function(data) {
+			 var test_data = {
+				 user: '@ryan',
+				 message: 'Hello world'
+			 };
+		    socket.emit('client', test_data);
+			 });*/
+		 socket.on('server', function(data) {
+
+			 var sent_user = 'From ' + data.user + '<br>';
+			 $('#content').append(data.message + '<br>');
+			 $('#content').append(sent_user);
+		   });
+
+		 $('form').submit(function(e){
+		     e.preventDefault();
+		     var message = $('#chat_input').val();
+	             var user = $('#user').val();
+		     var msg = {
+			     message : message,
+			     user : user
+		     };
+		     socket.emit('client', msg);
+		 });
+		});
+	</script>
+	<style>
+    * { font-family:tahoma; font-size:24px; padding:0px;margin:0px; text-align: center;}
+    p { line-height:18px; }
+    div { width:500px; margin-left:auto; margin-right:auto; 
+    		border: 1px solid black;}
+    #content { padding:5px; background:#ddd; border-radius:5px;
+        overflow-y: scroll; border:1px solid #CCC;
+        margin-top:10px; height: 160px; }
+    input { border-radius:2px; border:1px solid #ccc;
+        margin:5px; padding:5px; width:400px;
+    }
+    h1 { text-align: center; font-size: 24px;} 
+    #status { width:88px;display:block;float:left;margin-top:15px; }
+  </style>
+    </head>
+    <body>
+        <h1>Chat App</h1>
+        <div id="future">
+		<div id="content">
+		</div>
+	</div>
+        <form id="form" id="chat_form">
+	    <input id="user" type="text" placeholder="@User">
+            <input id="chat_input" type="text" placeholder="Message">
+            <input type="submit" value="Send">
+        </form>
+        <script src="/socket.io/socket.io.js"></script>
+    </body>
+</html>
+
